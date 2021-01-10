@@ -6,6 +6,10 @@ export class LightController extends Controller {
     return this._config.attribute || "brightness";
   }
 
+  get transition() {
+    return this._config.transition;
+  }
+
   get _value() {
     if (!this.stateObj || this.stateObj.state !== "on") return 0;
     switch (this.attribute) {
@@ -74,6 +78,8 @@ export class LightController extends Controller {
     let attr = this.attribute;
     let on = true;
     let _value;
+    const serviceData = { entity_id: this.stateObj.entity_id };
+    let serviceName;
     switch (attr) {
       case "brightness":
         value = Math.ceil(value/100.0*255);
@@ -104,15 +110,13 @@ export class LightController extends Controller {
     }
 
     if (on) {
-      this._hass.callService("light", "turn_on", {
-        entity_id: this.stateObj.entity_id,
-        [attr]: value,
-      });
+      serviceName = "turn_on";
+      serviceData[attr] = value;
+      if(this.transition) serviceData['transition'] = this.transition;
     } else {
-      this._hass.callService("light", "turn_off", {
-        entity_id: this.stateObj.entity_id,
-      });
+      serviceName = "turn_off";
     }
+    this._hass.callService("light", serviceName, serviceData);
   }
 
   get string() {
