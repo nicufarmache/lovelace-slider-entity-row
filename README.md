@@ -1,3 +1,7 @@
+forked from https://github.com/thomasloven/lovelace-slider-entity-row
+
+Added support for transition option
+
 slider-entity-row
 =================
 
@@ -51,6 +55,7 @@ Currenly supported entity domains:
 - `max: <value>` - Set maximum value of slider
 - `step: <value>` - Set step size of slider
 - `attribute: <value>` - Select which attribute the slider should control
+- `transition: <value>` - Set transition time in seconds (for `light` domain only)
 
 ```yaml
 type: entities
